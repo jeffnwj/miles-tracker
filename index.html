@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miles Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Miles Tracker</h1>
+        <p>Track your credit card miles!</p>
+        
+        <!-- Input for Purchase -->
+        <div>
+            <label for="purchaseAmount">Enter Purchase Amount:</label>
+            <input type="number" id="purchaseAmount" placeholder="Amount spent" min="0">
+            <button onclick="addPurchase()">Add Purchase</button>
+        </div>
+
+        <div id="milesSummary">
+            <p><strong>Total Miles Earned:</strong> <span id="totalMiles">0</span></p>
+            <p><strong>Remaining to Earn 4 Miles/Dollar:</strong> <span id="remainingToMax">1000</span> (Amount left to earn 4 miles per dollar)</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
