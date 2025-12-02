@@ -82,6 +82,17 @@ button:hover {
     background: #005fcc;
 }
 
+/* Reset button (secondary button) */
+.secondary-btn {
+    margin-top: 12px;
+    width: 100%;
+    background: #999;
+}
+
+.secondary-btn:hover {
+    background: #777;
+}
+
 p {
     font-size: 16px;
     margin-bottom: 8px;
