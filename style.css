@@ -148,7 +148,31 @@ span {
     color: #fff;
     
 }
+/* ===========================
+   Transaction Table Styling
+   =========================== */
+#transactionTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    color: #ffffff; /* white text for tech style */
+}
 
+#transactionTable th, #transactionTable td {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding: 10px;
+    text-align: left;
+}
+
+#transactionTable th {
+    font-weight: 600;
+    color: #00bfff; /* accent for headers */
+}
+
+#transactionTable tr:hover {
+    background: rgba(0, 191, 255, 0.1);
+    transition: 0.2s ease;
+}
 /* ===========================
    Responsive tweaks
    =========================== */
