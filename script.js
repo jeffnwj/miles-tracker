@@ -1,4 +1,7 @@
-// ----- VARIABLES -----
+// ===============================
+// ----- VARIABLES --------------
+// ===============================
+
 // how much the user has spent so far
 let totalSpent = 0;
 
@@ -6,101 +9,131 @@ let totalSpent = 0;
 let totalMiles = 0;
 
 // $$ limit where purchases earn 4× miles (kept at $1000 per your request)
-const limitFor4Miles = 1500;
+const limitFor4Miles = 1000;
 
 
+// ===============================
+// ----- BUTTON EVENT LISTENERS ---
+// ===============================
+
+// notes: This connects the Reset button in HTML to the resetTracker() function.
+// notes: If your HTML uses a different ID, this will NOT work.
+document.getElementById("resetButton").addEventListener("click", resetTracker);
+
+
+
+// ===============================
 // ----- LOAD SAVED DATA ON PAGE OPEN -----
-// (This makes progress stay after refresh)
+// ===============================
+
+// notes: This runs automatically when the page opens.
 window.onload = () => {
-    // load saved totals. If the stored value is null or not a valid number, keep 0.
+
+    // load saved values from browser storage
     const savedSpent = localStorage.getItem("totalSpent");
     const savedMiles = localStorage.getItem("totalMiles");
 
-    // //notes: Number(...) converts strings to numbers; if conversion fails it returns NaN.
+    // convert stored values to numbers
     totalSpent = Number(savedSpent);
     totalMiles = Number(savedMiles);
 
-    // if not finite, fallback to 0
+    // if conversion failed, fallback to 0
     if (!Number.isFinite(totalSpent)) totalSpent = 0;
     if (!Number.isFinite(totalMiles)) totalMiles = 0;
 
     console.log("[MilesTracker] Loaded from storage:", { totalSpent, totalMiles });
 
-    // update screen with loaded values
+    // update screen with loaded numbers
     updateUI();
 };
 
 
 
-// ----- UPDATE UI ELEMENTS -----
+// ===============================
+// ----- UPDATE UI FUNCTION -----
+// ===============================
+
 function updateUI() {
-    // show total miles earned so far (no decimals)
+
+    // show total miles earned (no decimals)
     document.getElementById("totalMiles").innerText = totalMiles.toFixed(0);
 
-    // calculate how much more can earn 4× miles (no decimals shown)
+    // calculate remaining dollars that still qualify for 4× miles
     const remaining = Math.max(0, limitFor4Miles - totalSpent);
     document.getElementById("remainingToMax").innerText = remaining.toFixed(0);
 
-    // clear the input box
+    // clear the input text field
     document.getElementById("purchaseAmount").value = "";
 
-    // auto-focus the input again (nice UX)
+    // put cursor back in the input box
     document.getElementById("purchaseAmount").focus();
 
-    // helpful log for debugging
     console.log("[MilesTracker] updateUI:", { totalSpent, totalMiles, remaining });
 }
 
 
 
-// ----- ADD PURCHASE FUNCTION -----
-// runs when user clicks "Add"
+// ===============================
+// ----- ADD PURCHASE -----------
+// ===============================
+
+// notes: This runs whenever you press the Add button
 function addPurchase() {
 
-    // get number from input box
+    // get the user’s input as text
     const raw = document.getElementById("purchaseAmount").value;
+
+    // convert to number
     const purchaseAmount = Number(raw);
 
-    console.log("[MilesTracker] addPurchase called with input:", raw, "parsed:", purchaseAmount);
+    console.log("[MilesTracker] addPurchase called with:", raw, "parsed:", purchaseAmount);
 
-    // validation check
-    // ensures it's a real number and greater than 0
+    // validate number
     if (!Number.isFinite(purchaseAmount) || purchaseAmount <= 0) {
         alert("Please enter a valid amount greater than 0.");
         return;
     }
 
-    // how much of the purchase still qualifies for 4× miles
+    // find remaining money that still earns 4×
     const remainingAt4x = Math.max(0, limitFor4Miles - totalSpent);
 
-    // split the purchase:
-    // part that gets 4×
+    // portion of this purchase that still gets 4×
     const spentAt4x = Math.min(remainingAt4x, purchaseAmount);
 
-    // part that gets only 1×
+    // rest earns 1×
     const spentAt1x = purchaseAmount - spentAt4x;
 
-    // calculate miles earned
-    // 4× for the first portion, 1× for the rest
+    // miles earned math
     const milesEarned = (spentAt4x * 4) + (spentAt1x * 1);
 
     // update totals
-    totalMiles += milesEarned;
     totalSpent += purchaseAmount;
+    totalMiles += milesEarned;
 
-    // save to localStorage so progress persists
+    // save values so it persists after refresh
     localStorage.setItem("totalSpent", String(totalSpent));
     localStorage.setItem("totalMiles", String(totalMiles));
 
-    console.log("[MilesTracker] after add:", { purchaseAmount, spentAt4x, spentAt1x, milesEarned, totalSpent, totalMiles });
+    console.log("[MilesTracker] after add:", {
+        purchaseAmount,
+        spentAt4x,
+        spentAt1x,
+        milesEarned,
+        totalSpent,
+        totalMiles
+    });
 
-    // refresh screen
+    // refresh the UI with new numbers
     updateUI();
 }
 
 
 
-// ----- RESET TRACKER -----
+// ===============================
+// ----- RESET TRACKER ----------
+// ===============================
+
+// notes: Clears everything and resets tracker to 0
 function resetTracker() {
 
     // ask user to confirm
@@ -110,11 +143,12 @@ function resetTracker() {
     totalSpent = 0;
     totalMiles = 0;
 
-    // clear saved data (only our keys would be better, but this is simple)
-    localStorage.clear();
+    // clear the saved values
+    localStorage.removeItem("totalSpent");
+    localStorage.removeItem("totalMiles");
 
     console.log("[MilesTracker] Reset performed");
 
-    // update UI
+    // refresh UI
     updateUI();
 }
