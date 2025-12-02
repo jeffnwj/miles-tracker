@@ -5,50 +5,90 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
 }
 
 .container {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
 }
 
 h1 {
     text-align: center;
+    font-size: 32px;
+    font-weight: 600;
     margin-bottom: 20px;
+    color: #333;
 }
 
-label {
-    font-size: 16px;
-    margin-right: 10px;
+/* Card styling */
+.card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
 }
 
 input {
-    padding: 8px;
-    width: 200px;
-    margin-right: 10px;
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.2s ease;
+}
+
+input:focus {
+    border-color: #007aff;
+    outline: none;
 }
 
 button {
-    padding: 8px 16px;
+    padding: 12px 20px;
+    background: #007aff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
+    transition: 0.25s ease;
 }
 
 button:hover {
-    background-color: #007bff;
-    color: white;
+    background: #005fcc;
 }
 
-#purchaseAmount {
-    width: 180px;
+p {
+    font-size: 16px;
+    margin-bottom: 8px;
 }
 
-#totalMiles, #remainingToMax {
-    font-weight: bold;
+span {
+    font-weight: 600;
+    color: #007aff;
 }
+
