@@ -6,7 +6,7 @@ let totalSpent = 0;
 let totalMiles = 0;
 
 // $$ limit where purchases earn 4× miles (kept at $1000 per your request)
-const limitFor4Miles = 1000;
+const limitFor4Miles = 1500;
 
 
 // ----- LOAD SAVED DATA ON PAGE OPEN -----
