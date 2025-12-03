@@ -8,8 +8,8 @@ let totalSpent = 0;
 // total miles earned
 let totalMiles = 0;
 
-// $$ limit where purchases earn 4× miles
-const limitFor4Miles = 1500;
+// $$ limit where purchases earn 4 miles per dollar (in $5 blocks)
+const limitFor4Miles = 540;
 
 // ===============================
 // ----- BUTTON EVENT LISTENERS ---
@@ -49,7 +49,7 @@ function updateUI() {
     // Update total miles display
     document.getElementById("totalMiles").innerText = totalMiles.toFixed(0);
 
-    // Calculate remaining to earn 4× miles
+    // Calculate remaining to earn 4 miles per dollar
     const remaining = Math.max(0, limitFor4Miles - totalSpent);
     document.getElementById("remainingToMax").innerText = remaining.toFixed(0);
 
@@ -58,6 +58,16 @@ function updateUI() {
     document.getElementById("purchaseAmount").focus();
 
     console.log("[MilesTracker] updateUI:", { totalSpent, totalMiles, remaining });
+}
+
+// ===============================
+// ----- CALCULATE MILES IN $5 BLOCKS -----
+// ===============================
+function calculateMilesInBlocks(amount, milesPerDollar) {
+    // Floor to nearest $5 block
+    const blocks = Math.floor(amount / 5);
+    // Each block of $5 earns (5 * milesPerDollar) miles
+    return blocks * 5 * milesPerDollar;
 }
 
 // ===============================
@@ -76,15 +86,17 @@ function addPurchase() {
         return;
     }
 
-    // Calculate how much still earns 4× miles
+    // Calculate how much still earns 4 miles per dollar (in $5 blocks)
     const remainingAt4x = Math.max(0, limitFor4Miles - totalSpent);
 
-    // Split purchase into 4× portion and 1× portion
+    // Split purchase into 4× portion and 0.4× portion
     const spentAt4x = Math.min(remainingAt4x, purchaseAmount);
-    const spentAt1x = purchaseAmount - spentAt4x;
+    const spentAt0_4x = purchaseAmount - spentAt4x;
 
-    // Calculate miles earned
-    const milesEarned = (spentAt4x * 4) + (spentAt1x * 1);
+    // Calculate miles earned in $5 blocks
+    const milesFrom4x = calculateMilesInBlocks(spentAt4x, 4);
+    const milesFrom0_4x = calculateMilesInBlocks(spentAt0_4x, 0.4);
+    const milesEarned = milesFrom4x + milesFrom0_4x;
 
     // Update totals
     totalSpent += purchaseAmount;
@@ -97,13 +109,15 @@ function addPurchase() {
     console.log("[MilesTracker] after add:", {
         purchaseAmount,
         spentAt4x,
-        spentAt1x,
+        spentAt0_4x,
+        milesFrom4x,
+        milesFrom0_4x,
         milesEarned,
         totalSpent,
         totalMiles
     });
 
-    // ===== NEW: Store transaction =====
+    // ===== Store transaction =====
     let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     const now = new Date();
     transactions.push({
@@ -129,8 +143,11 @@ function updateTransactionTable() {
     // Load transactions from localStorage
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
+    // Reverse the array to show newest transactions first (DESC order)
+    const reversedTransactions = transactions.slice().reverse();
+
     // Add each transaction as a new row
-    transactions.forEach(tx => {
+    reversedTransactions.forEach(tx => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${tx.datetime}</td>
