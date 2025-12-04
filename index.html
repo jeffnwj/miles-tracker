@@ -31,4 +31,40 @@
         <span>Online</span>
     </label>
 </div>
+        </div>
 
+        <div class="card">
+            <h2>Summary</h2>
+            <p><strong>Total Miles Earned:</strong> <span id="totalMiles">0</span></p>
+            <p><strong>Remaining to earn 4 miles/dollar:</strong> <span id="remainingToMax">540</span></p>
+        </div>
+
+        <!-- =========================
+             Transaction History BELOW SUMMARY
+             ========================= -->
+        <div class="card">
+            <h2>Transaction History</h2>
+            <table id="transactionTable">
+                <thead>
+                    <tr>
+                        <th>Date/Time</th>
+                        <th>Amount ($)</th>
+                        <th>Miles Earned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- JS will fill this dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+    </div> <!-- end of container -->
+   
+    <footer class="footer-note">
+    <p>Miles Tracker v1.0.0 — Last updated: 03 Dec 2025</p>
+    <p>Notes: for UOB PPV contactless payment only</p>
+        <p>Next update: Missed Opportunites. Bucket for online transaction. </p>
+</footer>
+    <script src="script.js"></script>
+</body>
+</html>
