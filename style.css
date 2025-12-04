@@ -1,6 +1,33 @@
-/* ===========================
-   Reset & Base Styles
-   =========================== */
+/* ==========================================================================
+   BASE + THEME TOKENS (UX-driven design system)
+   ========================================================================== */
+:root {
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+
+    --color-bg-1: #0f0c29;
+    --color-bg-2: #302b63;
+    --color-bg-3: #24243e;
+
+    --color-accent: #00fff0;
+    --color-accent-2: #00b3ff;
+
+    --color-text: #ffffff;
+    --color-text-dim: #c7e8ff;
+
+    --glow-soft: 0 0 12px rgba(0, 255, 240, 0.45);
+    --glow-strong: 0 0 24px rgba(0, 255, 240, 0.65);
+
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(0, 255, 240, 0.22);
+
+    --transition: 0.25s ease;
+}
+
+/* ==========================================================================
+   BASE LAYOUT
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -9,186 +36,323 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* dark tech gradient */
+    background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-2), var(--color-bg-3));
     min-height: 100vh;
-    padding: 40px 20px;
-    color: #fff;
+    padding: 40px 22px;
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* ===========================
-   Container
-   =========================== */
 .container {
-    width: 100%;
-    max-width: 450px;
+    max-width: 430px;
     margin: 0 auto;
     position: relative;
 }
 
-/* ===========================
-   Header
-   =========================== */
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
 h1 {
     text-align: center;
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 28px;
 }
 
-/* ===========================
-   Reset Button (icon)
-   =========================== */
+/* Reset Icon */
 .reset-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
+    top: 6px;
+    right: 6px;
+    background: none;
     border: none;
     font-size: 18px;
+    color: var(--color-text);
+    padding: 10px;
     cursor: pointer;
-    color: #fff;
-    transition: 0.2s ease;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
 }
-
 .reset-icon:hover {
-    color: #00ffdd;
-    text-shadow: 0 0 15px #00ffdd, 0 0 25px #00ffdd;
+    color: var(--color-accent);
+    text-shadow: var(--glow-soft);
 }
 
-/* ===========================
-   Card Styling (Glassmorphism)
-   =========================== */
+/* ==========================================================================
+   CARD (lighter, cleaner, more iOS)
+   ========================================================================== */
 .card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(0, 255, 240, 0.2);
-    border-radius: 16px;
-    padding: 25px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
     margin-bottom: 20px;
-    box-shadow: 0 0 20px rgba(0, 255, 240, 0.2);
     backdrop-filter: blur(10px);
-    transition: 0.4s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    transition: var(--transition);
 }
-
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 40px rgba(0, 255, 240, 0.5), 0 0 60px rgba(0, 255, 240, 0.3);
+    transform: translateY(-3px);
 }
 
-/* ===========================
-   Headings inside Cards
-   =========================== */
+/* ==========================================================================
+   CARD HEADINGS
+   ========================================================================== */
 h2 {
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #fff;
-    
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
 }
 
-/* ===========================
-   Input Group
-   =========================== */
+/* ==========================================================================
+   INPUT GROUP
+   ========================================================================== */
 .input-group {
     display: flex;
     gap: 12px;
+    align-items: center;
 }
 
 /* Inputs */
 input {
     flex: 1;
     padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(0, 255, 240, 0.3);
-    background: rgba(0, 0, 0, 0.3);
-    color: #00fff0;
+    border-radius: var(--radius-md);
     font-size: 16px;
-    font-weight: 500;
-    transition: 0.25s ease;
+    background: rgba(255,255,255,0.04);
+    color: var(--color-accent);
+    border: 1px solid rgba(0,255,240,0.28);
+    transition: var(--transition);
 }
 
 input:focus {
-    border-color: #00fff0;
     outline: none;
-    box-shadow: 0 0 10px #00fff0;
+    border-color: var(--color-accent);
+    box-shadow: var(--glow-soft);
 }
 
-/* Buttons */
+/* ==========================================================================
+   BUTTON STYLING
+   ========================================================================== */
 button {
-    padding: 14px 22px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
     border: none;
-    border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    background: linear-gradient(135deg, #00fff0, #00b3ff);
+
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
     color: #000;
-    text-shadow: 0 0 2px #fff;
-    box-shadow: 0 0 10px rgba(0, 255, 240, 0.6);
-    transition: 0.3s ease;
+    transition: var(--transition);
+
+    box-shadow: 0 0 14px rgba(0, 255, 240, 0.45);
 }
 
 button:hover {
-    background: linear-gradient(135deg, #00b3ff, #00fff0);
-    box-shadow: 0 0 20px rgba(0, 255, 240, 0.8), 0 0 30px rgba(0, 255, 240, 0.5);
+    box-shadow: var(--glow-strong);
 }
 
-/* ===========================
-   Paragraphs and spans
-   =========================== */
+/* ==========================================================================
+   IMPROVED MODERN TOGGLE (tech but minimal)
+   ========================================================================== */
+.toggle-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-lg);
+    padding: 4px;
+
+    backdrop-filter: blur(6px);
+}
+
+.toggle-option {
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-dim);
+
+    transition: var(--transition);
+}
+
+.toggle-option input {
+    display: none;
+}
+
+.toggle-option input:checked + span {
+    display: block;
+    background: rgba(0,255,240,0.15);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    color: var(--color-accent);
+    box-shadow: inset 0 0 14px rgba(0,255,240,0.25);
+}
+
+/* ==========================================================================
+   PARAGRAPHS + SUMMARY
+   ========================================================================== */
 p {
-    font-size: 16px;
+    font-size: 15px;
     margin-bottom: 10px;
-    color: #fff;
+    color: var(--color-text);
 }
 
 span {
-    font-weight: 700;
-    color: #fff;
-    
+    font-weight: 600;
 }
-/* ===========================
-   Transaction Table Styling
-   =========================== */
+
+/* ==========================================================================
+   TABLE STYLING
+   ========================================================================== */
 #transactionTable {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
-    color: #ffffff; /* white text for tech style */
-}
-
-#transactionTable th, #transactionTable td {
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    padding: 10px;
-    text-align: left;
+    margin-top: 8px;
 }
 
 #transactionTable th {
+    padding: 10px 6px;
+    text-align: left;
+    color: var(--color-accent-2);
     font-weight: 600;
-    color: #00bfff; /* accent for headers */
+    font-size: 14px;
+}
+
+#transactionTable td {
+    padding: 10px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--color-text);
+    font-size: 14px;
 }
 
 #transactionTable tr:hover {
-    background: rgba(0, 191, 255, 0.1);
-    transition: 0.2s ease;
+    background: rgba(0, 255, 240, 0.07);
 }
-/* ===========================
-   Responsive tweaks
-   =========================== */
-@media (max-width: 500px) {
-    .card {
-        padding: 20px;
-    }
 
-    h1 {
-        font-size: 28px;
-    }
+/* ==========================================================================
+   FOOTER NOTE
+   ========================================================================== */
+.footer-note {
+    text-align: center;
+    font-size: 7px;
+    color: #b3b3b3;
+    margin-top: 28px;
+    line-height: 1.1;
+    opacity: 0.7;
+}
 
-    h2 {
-        font-size: 20px;
-    }
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 480px) {
+    h1 { font-size: 26px; }
+    h2 { font-size: 18px; }
+    button { font-size: 15px; }
+}
 
-    button {
-        font-size: 15px;
-        padding: 12px 18px;
+
+/* ==========================================================================
+   iPhone / Mobile Safari Optimization Layer
+   ========================================================================== */
+
+/* Respect iPhone notch safe areas */
+body {
+    padding-top: calc(40px + env(safe-area-inset-top));
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+/* Fix iOS Safari font-weight rendering */
+body, input, button {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* Improve scroll performance on iOS */
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent zoom on input focus (iOS 300% zoom bug) */
+input {
+    font-size: 16px !important;
+}
+
+/* Improve tap responsiveness (remove 300ms delay on older iOS) */
+button, input, .toggle-option {
+    touch-action: manipulation;
+}
+
+/* Improve gradient rendering and avoid banding on iOS */
+body {
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Prevent highlighting elements during taps (iOS blue highlight) */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* Stronger contrast on neon for mobile OLED screens */
+button {
+    box-shadow:
+        0 0 12px rgba(0, 255, 240, 0.55),
+        0 0 20px rgba(0, 255, 240, 0.35);
+}
+
+/* Toggle full-box selected state smoothing */
+.toggle-option input:checked + span {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0,255,240,0.4);
+}
+
+/* Make tap areas larger */
+.toggle-option span {
+    padding: 12px 20px;
+}
+
+/* Improve table readability on small Retina screens */
+#transactionTable td, #transactionTable th {
+    padding: 12px 8px;
+    font-size: 15px;
+}
+
+/* Prevent layout jank on rotation */
+@media (orientation: landscape) {
+    body {
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
+}
+
+/* Fix iOS Safari 1px border misalignment due to subpixel rendering */
+.card,
+.toggle-group,
+input,
+button {
+    border-width: 0.7px;
+}
+
+/* Smooth animations tailored for iOS GPU */
+.card,
+button,
+.toggle-option span {
+    will-change: transform, box-shadow, background;
+}
+
+/* Disable double-tap zoom on interactive elements */
+button {
+    touch-action: manipulation;
 }
