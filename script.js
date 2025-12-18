@@ -1,22 +1,28 @@
 // ===============================
-// ----- MIGRATION --------------
+// --- MIGRATION for v1.0 to v1.1--------------
 // ===============================
 function migrateV1TransactionsIfNeeded() {
     let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
     let migrated = false;
 
     transactions = transactions.map(tx => {
-        // Detect v1.0 transaction
+        // Force type and spendAt4x for v1.0 transactions
         if (!("type" in tx) || !("spendAt4x" in tx)) {
             migrated = true;
-
-            return {
-                ...tx,
-                type: "contactless",
-                spendAt4x: tx.amount,          // assume full amount consumed 4mpd bucket
-                datetime: new Date().toISOString() // convert to ISO for iOS-safe parsing
-            };
+            tx.type = "contactless";
+            tx.spendAt4x = tx.amount;
         }
+
+        // Force datetime to ISO string if missing or invalid
+        let parsedDate = new Date(tx.datetime);
+        if (!tx.datetime || !parsedDate.getTime()) {
+            migrated = true;
+            tx.datetime = new Date().toISOString();
+        } else {
+            // convert valid old string to ISO to make Safari happy
+            tx.datetime = parsedDate.toISOString();
+        }
+
         return tx;
     });
 
@@ -25,6 +31,7 @@ function migrateV1TransactionsIfNeeded() {
         localStorage.setItem("transactions", JSON.stringify(transactions));
     }
 }
+
 
 // ===============================
 // ----- VARIABLES --------------
