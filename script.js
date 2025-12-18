@@ -1,4 +1,3 @@
-// your code goes here
 // ===============================
 // ----- MIGRATION --------------
 // ===============================
@@ -14,7 +13,8 @@ function migrateV1TransactionsIfNeeded() {
             return {
                 ...tx,
                 type: "contactless",
-                spendAt4x: tx.amount // assume full amount consumed 4mpd bucket
+                spendAt4x: tx.amount,          // assume full amount consumed 4mpd bucket
+                datetime: new Date().toISOString() // convert to ISO for iOS-safe parsing
             };
         }
         return tx;
@@ -26,7 +26,6 @@ function migrateV1TransactionsIfNeeded() {
     }
 }
 
-
 // ===============================
 // ----- VARIABLES --------------
 // ===============================
@@ -37,27 +36,19 @@ function getSelectedPurchaseType() {
     return document.querySelector('input[name="purchaseType"]:checked').value;
 }
 
-
-
 // ===============================
 // ----- BUTTON EVENT LISTENERS ---
 // ===============================
-
-// attach reset button to resetTracker function
 document.getElementById("resetButton").addEventListener("click", resetTracker);
 
 // ===============================
 // ----- LOAD SAVED DATA ON PAGE OPEN (v1.1) -----
 // ===============================
 window.onload = () => {
-    // 🔁 One-time migration for v1.0 users
     migrateV1TransactionsIfNeeded();
-
-    // 🔄 Render UI from transactions (source of truth)
     updateUI();
     updateTransactionTable();
 };
-
 
 // ===============================
 // ----- UPDATE UI FUNCTION -----
@@ -71,7 +62,6 @@ function updateUI() {
 
     transactions.forEach(tx => {
         totalMiles += tx.miles;
-
         if (tx.type === "contactless") {
             contactless4xUsed += tx.spendAt4x;
         } else if (tx.type === "online") {
@@ -86,18 +76,16 @@ function updateUI() {
     document.getElementById("remainingContactless").innerText = remainingContactless.toFixed(0);
     document.getElementById("remainingOnline").innerText = remainingOnline.toFixed(0);
 
-    document.getElementById("purchaseAmount").value = "";
-    document.getElementById("purchaseAmount").focus();
+    const input = document.getElementById("purchaseAmount");
+    input.value = "";
+    input.focus();
 }
-
 
 // ===============================
 // ----- CALCULATE MILES IN $5 BLOCKS -----
 // ===============================
 function calculateMilesInBlocks(amount, milesPerDollar) {
-    // Floor to nearest $5 block
     const blocks = Math.floor(amount / 5);
-    // Each block of $5 earns (5 * milesPerDollar) miles
     return blocks * 5 * milesPerDollar;
 }
 
@@ -134,11 +122,11 @@ function addPurchase() {
     const now = new Date();
 
     transactions.push({
-        datetime: now.toLocaleString(),
-        type,              // contactless / online
+        datetime: now.toISOString(), // Store ISO string for iOS-safe parsing
+        type,
         amount: purchaseAmount,
         miles: milesEarned,
-        spendAt4x          // 🔑 per-type cap tracking
+        spendAt4x
     });
 
     localStorage.setItem("transactions", JSON.stringify(transactions));
@@ -147,9 +135,8 @@ function addPurchase() {
     updateTransactionTable();
 }
 
-
 // ===============================
-// ----- DATE TIME PARSE  ----- V1.1 
+// ----- DATE TIME PARSE (Mobile-friendly) -----
 // ===============================
 function formatTransactionDate(datetimeString) {
     const date = new Date(datetimeString);
@@ -165,29 +152,22 @@ function formatTransactionDate(datetimeString) {
         hour12: true
     });
 
-    // Uppercase AM/PM and prevent line break
+    // Uppercase AM/PM & non-breaking space
     timePart = timePart.replace(/ /, "\u00A0").replace(/am|pm/i, match => match.toUpperCase());
 
-    return `${datePart}  ${timePart}`;
+    return `${datePart} • ${timePart}`;
 }
-
-
-
 
 // ===============================
 // ----- UPDATE TRANSACTION TABLE -----
 // ===============================
 function updateTransactionTable() {
     const tableBody = document.querySelector("#transactionTable tbody");
-    tableBody.innerHTML = ""; // clear previous rows
+    tableBody.innerHTML = "";
 
-    // Load transactions from localStorage
     const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-
-    // Reverse the array to show newest transactions first (DESC order)
     const reversedTransactions = transactions.slice().reverse();
 
-    // Add each transaction as a new row
     reversedTransactions.forEach(tx => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -204,23 +184,12 @@ function updateTransactionTable() {
 // ----- RESET TRACKER ----------
 // ===============================
 function resetTracker() {
-    // Ask user to confirm
     if (!confirm("Reset all data?")) return;
 
-    // Reset totals
-    totalSpent = 0;
-    totalMiles = 0;
-
-    // Clear totals from localStorage
-    localStorage.removeItem("totalSpent");
-    localStorage.removeItem("totalMiles");
-
-    // Clear transactions from localStorage
     localStorage.removeItem("transactions");
 
     console.log("[MilesTracker] Reset performed");
 
-    // Refresh UI and clear table
     updateUI();
     updateTransactionTable();
 }
