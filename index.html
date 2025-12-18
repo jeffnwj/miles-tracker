@@ -33,11 +33,34 @@
 </div>
         </div>
 
-       <div class="card">
+<div class="card">
     <h2>Summary</h2>
-    <p><strong>Total Miles Earned:</strong> <span id="totalMiles">0</span></p>
-    <p><strong>Contactless Remaining 4mpd:</strong> <span id="remainingContactless">540</span></p>
-    <p><strong>Online Remaining 4mpd:</strong> <span id="remainingOnline">540</span></p>
+    
+<div class="total-miles-display">
+        <p>Total Miles Earned</p>
+        <h3 id="totalMiles">0</h3>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-labels">
+            <span>Contactless (4 mpd)</span>
+            <span id="remainingContactlessText">$540 left</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div id="barContactless" class="progress-fill"></div>
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-labels">
+            <span>Online (4 mpd)</span>
+            <span id="remainingOnlineText">$540 left</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div id="barOnline" class="progress-fill"></div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -64,9 +87,9 @@
     </div> <!-- end of container -->
    
     <footer class="footer-note">
-    <p>Miles Tracker v1.1.0 — Last updated: 18 Dec 2025</p>
+    <p>Miles Tracker v1.1.1 — Last updated: 18 Dec 2025</p>
     <p>Last Update: Supports Contacless & Online bucket </p>
-        <p>Next update: Missed Opportunites. Progress Bar.  </p>
+        <p>Next update: Missed Opportunites. </p>
 </footer>
     <script src="script.js"></script>
 </body>
