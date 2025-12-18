@@ -76,16 +76,41 @@ function updateUI() {
         }
     });
 
-    const remainingContactless = Math.max(0, CAP_CONTACTLESS - contactless4xUsed);
-    const remainingOnline = Math.max(0, CAP_ONLINE - online4xUsed);
+    // Calculate remaining amounts
+    const remainContactless = Math.max(0, CAP_CONTACTLESS - contactless4xUsed);
+    const remainOnline = Math.max(0, CAP_ONLINE - online4xUsed);
 
-    document.getElementById("totalMiles").innerText = totalMiles.toFixed(0);
-    document.getElementById("remainingContactless").innerText = remainingContactless.toFixed(0);
-    document.getElementById("remainingOnline").innerText = remainingOnline.toFixed(0);
+    // Calculate percentages for the "Draw Down" effect (100% down to 0%)
+    const pctContactless = (remainContactless / CAP_CONTACTLESS) * 100;
+    const pctOnline = (remainOnline / CAP_ONLINE) * 100;
+
+    // Update Text
+    document.getElementById("totalMiles").innerText = Math.floor(totalMiles).toLocaleString();
+    document.getElementById("remainingContactlessText").innerText = `$${remainContactless.toFixed(0)} left`;
+    document.getElementById("remainingOnlineText").innerText = `$${remainOnline.toFixed(0)} left`;
+
+    // Update Progress Bar Widths
+    document.getElementById("barContactless").style.width = pctContactless + "%";
+    document.getElementById("barOnline").style.width = pctOnline + "%";
+
+    // UX: Change bar color to red if almost empty
+    updateBarColor("barContactless", pctContactless);
+    updateBarColor("barOnline", pctOnline);
 
     const input = document.getElementById("purchaseAmount");
     input.value = "";
-    input.focus();
+}
+
+// Helper to make it feel more "premium"
+function updateBarColor(elementId, percentage) {
+    const bar = document.getElementById(elementId);
+    if (percentage < 15) {
+        bar.style.background = "#ff4d4d"; // Alert red
+        bar.style.boxShadow = "0 0 10px rgba(255, 77, 77, 0.5)";
+    } else {
+        bar.style.background = "linear-gradient(90deg, var(--color-accent), var(--color-accent-2))";
+        bar.style.boxShadow = "0 0 10px rgba(0, 255, 240, 0.5)";
+    }
 }
 
 // ===============================
